@@ -35,6 +35,7 @@ function handleAuthResult(authResult) {
     // content that should be visible after authorization succeeds.
     // $('.pre-auth').hide();
     // $('.post-auth').show();
+    console.log('auth', authResult);
     loadAPIClientInterfaces();
   } else {
     // Make the #login-link clickable. Attempt a non-immediate OAuth 2.0
