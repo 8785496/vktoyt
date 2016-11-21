@@ -7,7 +7,7 @@ import store from './store'
 import { load } from './functions/youtobe/start'
 import { init } from './functions/vk/init'
 
-// load() // Youtobe
+load() // Youtobe
 init() // VK
 
 

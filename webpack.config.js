@@ -27,7 +27,7 @@ module.exports = {
         ]
     },
     devServer: {
-        port: 80,
+        port: 9000,
         host: '127.0.0.3',
         contentBase: __dirname,
     }

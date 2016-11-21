@@ -1,10 +1,8 @@
 export default function reducer(state = [], action) {
   switch (action.type) {
-    case value:
-      
-      break;
-  
+    case 'GET_PLAYLIST':
+      return action.items
     default:
-      break;
+      return state
   }
 }
