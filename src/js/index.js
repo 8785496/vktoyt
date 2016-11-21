@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom'
 import App from './components/app'
 
 import { load } from './functions/youtobe/start'
-import { test } from './functions/vk/iframe'
+import { init } from './functions/vk/init'
 
-// load()
-test()
+// load() // Youtobe
+init() // VK
 
 
 ReactDOM.render(
