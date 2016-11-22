@@ -4,8 +4,10 @@ import { Provider } from 'react-redux'
 
 import App from './components/app'
 import store from './store'
-import { load } from './functions/youtobe/start'
-import { init } from './functions/vk/init'
+// import { load } from './functions/youtobe/start'
+import { load } from './functions/youtobe'
+// import { init } from './functions/vk/init'
+import { init } from './functions/vk'
 
 load() // Youtobe
 init() // VK

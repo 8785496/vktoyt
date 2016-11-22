@@ -4,17 +4,20 @@
 // }
 
 // Search for a specified string.
-export function search() {
-  // var q = $('#query').val();
-  var request = gapi.client.youtube.search.list({
-    q: 'ногу свело наши юные смешные голоса',
-    part: 'snippet'
-  });
+export function search(q, dispatch) {
+  return (dispatch) => {
+    var request = gapi.client.youtube.search.list({
+      q: q,
+      part: 'snippet',
+      maxResults: 1
+    });
 
-  request.execute(function(response) {
-    console.log(response.result);
-    
-    // var str = JSON.stringify(response.result);
-    // $('#search-container').html('<pre>' + str + '</pre>');
-  });
+    request.execute(function (response) {
+      console.log(response.result.items[0].snippet.title);
+
+      // var str = JSON.stringify(response.result);
+      // $('#search-container').html('<pre>' + str + '</pre>');
+    });
+  }
+
 }
