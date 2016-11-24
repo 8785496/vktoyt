@@ -4,8 +4,13 @@
 // }
 
 // Search for a specified string.
-export function search(q, dispatch) {
+export function search(q, id, dispatch) {
   return (dispatch) => {
+    dispatch({
+      type: '',
+      id: id
+    })
+    
     var request = gapi.client.youtube.search.list({
       q: q,
       part: 'snippet',

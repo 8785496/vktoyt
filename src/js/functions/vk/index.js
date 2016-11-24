@@ -13,6 +13,10 @@ export function getAudio(ownerId, dispatch) {
           type: 'GET_PLAYLIST',
           items: r.response
         })
+        dispatch({
+          type: 'CREATE_SEARCH_LIST',
+          length: r.response.length
+        })
       }
     })
   }
