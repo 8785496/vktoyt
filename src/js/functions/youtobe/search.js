@@ -7,21 +7,36 @@
 export function search(q, id, dispatch) {
   return (dispatch) => {
     dispatch({
-      type: '',
-      id: id
+      type: 'SEARCH_ITEM_START',
+      id: id,
+      fetched: false,
+      fetching: true
     })
-    
-    var request = gapi.client.youtube.search.list({
-      q: q,
+
+    const reg = /[^0-9A-Za-zА-ЯЁа-яё]+/g
+    const query = q.replace(reg, ' ')
+    console.log('query = ', query)
+
+    const request = gapi.client.youtube.search.list({
+      q: query,
       part: 'snippet',
       maxResults: 1
     });
 
     request.execute(function (response) {
-      console.log(response.result.items[0].snippet.title);
+      if (response.result.items && response.result.items.length > 0) {
+        dispatch({
+          type: 'SEARCH_ITEM_COMPLETE',
+          id: id,
+          item: response.result.items[0]
+        })
+      } else {
+        dispatch({
+          type: 'SEARCH_ITEM_ERROR',
+          id: id
+        })
+      }
 
-      // var str = JSON.stringify(response.result);
-      // $('#search-container').html('<pre>' + str + '</pre>');
     });
   }
 

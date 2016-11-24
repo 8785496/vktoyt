@@ -8,7 +8,7 @@ export function getAudio(ownerId, dispatch) {
   return (dispatch) => {
     VK.Api.call('audio.get', { owner_id: ownerId, count: 1000 }, function (r) {
       if (r.response) {
-        // console.log(r)
+        r.response.splice(0, 1) // delete first element
         dispatch({
           type: 'GET_PLAYLIST',
           items: r.response

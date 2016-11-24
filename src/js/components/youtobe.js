@@ -13,13 +13,14 @@ import { search } from '../functions/youtobe/search'
     return {
       playlistYT: store.playlistYT,
       searchList: store.searchList,
-      playlistVK: store.playlistVK
+      playlistVK: store.playlistVK,
     }
   },
   (dispatch) => {
     return {
       search: bindActionCreators(search, dispatch),
-      createPlaylist: bindActionCreators(createPlaylist, dispatch)
+      createPlaylist: bindActionCreators(createPlaylist, dispatch),
+      addToPlaylist: bindActionCreators(addToPlaylist, dispatch)
     }
   }
 )
@@ -30,6 +31,7 @@ export default class YPlayList extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.search = this.search.bind(this)
     this.createPlaylist = this.createPlaylist.bind(this)
+    this.addToPlaylist = this.addToPlaylist.bind(this)
   }
   
   handleChange(event) {
@@ -45,15 +47,20 @@ export default class YPlayList extends React.Component {
   }
 
   addToPlaylist() {
-    addToPlaylist('hAvVt7zz1rM', 'PL0_usZwiHYBXhm1iJ_1AYNUiRJOkq5fnc')
+    let playlistId = this.props.playlistYT.playlist.id
+
+    this.props.searchList.forEach((item, i) => {
+      if (item.fetched) {
+        this.props.addToPlaylist(item.item.id.videoId, playlistId, i)
+      }
+    })
   }
 
   search() {
-    // this.props.search(this.state.value);
-    let id = +this.state.value;
-
-    this.props.search(this.props.playlistVK[id].artist + ' ' +
-     this.props.playlistVK[id].title);
+    this.props.playlistVK.forEach((item, i) => {
+      let query = item.artist + ' ' + item.title
+      this.props.search(query, i)
+    })
   }
 
   render() {
@@ -61,8 +68,7 @@ export default class YPlayList extends React.Component {
       <div>
         <h4>Youtobe</h4>
         <pre>
-          {/*JSON.stringify(this.props.searchList, null, 2)*/}
-          {this.state.value}
+          {JSON.stringify(this.props.playlistYT, null, 2)}
         </pre>
         <button type="" onClick={this.test}>Playlist</button><br />
         <button type="" onClick={this.createPlaylist}>Create Playlist</button><br />
@@ -74,8 +80,11 @@ export default class YPlayList extends React.Component {
           {this.props.searchList.map((item, i) => {
             return(
               <li key={i}>
-                {!item.fetch && 'empty'}
-                {item.fetching && ' - fetching'}
+                {!item.fetched && !item.fetching && !item.error && 'empty'}
+                {item.fetching && 'Loading...'}
+                {item.fetched && item.item.snippet.title}
+                {item.error}
+                {item.saved && ' (saved)'}
               </li>
             )
           })}
