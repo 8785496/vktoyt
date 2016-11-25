@@ -1,4 +1,4 @@
-export function addToPlaylist(id, playlistId, itemId, /*startPos, endPos,*/ dispatch) {
+export function addToPlaylist(id, playlistId, itemId, next, /*startPos, endPos,*/ dispatch) {
   return (dispatch) => {
     var details = {
       videoId: id,
@@ -28,6 +28,8 @@ export function addToPlaylist(id, playlistId, itemId, /*startPos, endPos,*/ disp
         type: 'ADD_PLAYLIST',
         id: itemId
       })
+
+      next(++itemId)
     });
   }
 }

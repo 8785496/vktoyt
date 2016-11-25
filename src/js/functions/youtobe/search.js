@@ -1,9 +1,3 @@
-// // After the API loads, call a function to enable the search box.
-// function handleAPILoaded() {
-//   $('#search-button').attr('disabled', false);
-// }
-
-// Search for a specified string.
 export function search(q, id, dispatch) {
   return (dispatch) => {
     dispatch({
@@ -36,8 +30,6 @@ export function search(q, id, dispatch) {
           id: id
         })
       }
-
     });
   }
-
 }

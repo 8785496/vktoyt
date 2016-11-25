@@ -27,15 +27,15 @@ import { search } from '../functions/youtobe/search'
 export default class YPlayList extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {value: ''};
+    this.state = { value: '' };
     this.handleChange = this.handleChange.bind(this)
     this.search = this.search.bind(this)
     this.createPlaylist = this.createPlaylist.bind(this)
     this.addToPlaylist = this.addToPlaylist.bind(this)
   }
-  
+
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   test() {
@@ -47,13 +47,24 @@ export default class YPlayList extends React.Component {
   }
 
   addToPlaylist() {
-    let playlistId = this.props.playlistYT.playlist.id
+    // const playlistId = "PL0_usZwiHYBXVqO8tJYu97AJjzVJR7NK6"
+    const playlistId = this.props.playlistYT.playlist.id
+    const length = this.props.searchList.length
 
-    this.props.searchList.forEach((item, i) => {
+    const next = (i) => {
+      if (i >= length)
+        return;
+      
+      const item = this.props.searchList[i]
+
       if (item.fetched) {
-        this.props.addToPlaylist(item.item.id.videoId, playlistId, i)
+        this.props.addToPlaylist(item.item.id.videoId, playlistId, i, next)
+      } else {
+        next(++i)
       }
-    })
+    }
+
+    next(0)
   }
 
   search() {
@@ -73,12 +84,12 @@ export default class YPlayList extends React.Component {
         <button type="" onClick={this.test}>Playlist</button><br />
         <button type="" onClick={this.createPlaylist}>Create Playlist</button><br />
         <button type="" onClick={this.addToPlaylist}>Add To Playlist</button><br />
-        <input type="text"  onChange={this.handleChange} />
+        <input type="text" onChange={this.handleChange} />
         <button type="" onClick={this.search}>Search</button><br />
 
         <ul>
           {this.props.searchList.map((item, i) => {
-            return(
+            return (
               <li key={i}>
                 {!item.fetched && !item.fetching && !item.error && 'empty'}
                 {item.fetching && 'Loading...'}
