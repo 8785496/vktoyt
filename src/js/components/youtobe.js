@@ -2,10 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { requestUserUploadsPlaylistId } from '../functions/youtobe/list'
-import { createPlaylist } from '../functions/youtobe/create-playlist'
-import { addToPlaylist } from '../functions/youtobe/add-to-playlist'
-import { search } from '../functions/youtobe/search'
+import { createPlaylist } from '../actions/youtobe/create-playlist'
+import { addToPlaylist } from '../actions/youtobe/add-to-playlist'
+import { search } from '../actions/youtobe/search'
+import { load } from '../actions/youtobe'
 
 
 @connect(
@@ -38,10 +38,6 @@ export default class YPlayList extends React.Component {
     this.setState({ value: event.target.value });
   }
 
-  test() {
-    requestUserUploadsPlaylistId()
-  }
-
   createPlaylist() {
     this.props.createPlaylist();
   }
@@ -54,7 +50,7 @@ export default class YPlayList extends React.Component {
     const next = (i) => {
       if (i >= length)
         return;
-      
+
       const item = this.props.searchList[i]
 
       if (item.fetched) {
@@ -76,21 +72,30 @@ export default class YPlayList extends React.Component {
 
   render() {
     return (
-      <div>
-        <h4>Youtobe</h4>
-        <pre>
-          {JSON.stringify(this.props.playlistYT, null, 2)}
-        </pre>
-        <button type="" onClick={this.test}>Playlist</button><br />
-        <button type="" onClick={this.createPlaylist}>Create Playlist</button><br />
-        <button type="" onClick={this.addToPlaylist}>Add To Playlist</button><br />
-        <input type="text" onChange={this.handleChange} />
-        <button type="" onClick={this.search}>Search</button><br />
+      <div className="panel panel-danger">
+        <div className="panel-heading">Youtobe ({this.props.playlistYT.playlist && this.props.playlistYT.playlist.id})</div>
+        <div className="panel-body">
+          
+          {this.state.value}
+          
+          <div className="input-group">
+            <input type="text" className="form-control" placeholder="Playlist name..." onChange={this.handleChange} />
+              <span className="input-group-btn">
+                <button className="btn btn-default" type="button"  onClick={this.createPlaylist}>Create Playlist</button>
+              </span>
+          </div>
+          <br />
+          <button className="btn btn-default" type="" onClick={load}>Login</button>
+          {' '}
+          <button className="btn btn-default" type="" onClick={this.search}>Search</button>
+          {' '}
+          <button className="btn btn-default" type="" onClick={this.addToPlaylist}>Add To Playlist</button>
+        </div>
 
-        <ul>
+        <ul className="list-group">
           {this.props.searchList.map((item, i) => {
             return (
-              <li key={i}>
+              <li className="list-group-item" key={i}>
                 {!item.fetched && !item.fetching && !item.error && 'empty'}
                 {item.fetching && 'Loading...'}
                 {item.fetched && item.item.snippet.title}
@@ -101,6 +106,6 @@ export default class YPlayList extends React.Component {
           })}
         </ul>
       </div>
-    )
+      )
   }
 }

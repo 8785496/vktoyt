@@ -5,12 +5,12 @@ import { Provider } from 'react-redux'
 import App from './components/app'
 import store from './store'
 // import { load } from './functions/youtobe/start'
-import { load } from './functions/youtobe'
+// import { load } from './functions/youtobe'
 // import { init } from './functions/vk/init'
-import { init } from './functions/vk'
+// import { init } from './actions/vk'
 
-load() // Youtobe
-init() // VK
+// load() // Youtobe
+// init() // VK init
 
 
 ReactDOM.render(

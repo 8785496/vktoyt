@@ -2,8 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { login } from '../functions/vk'
-import { getAudio } from '../functions/vk'
+import { login } from '../actions/vk'
+import { getAudio } from '../actions/vk'
+import { init } from '../actions/vk'
 
 @connect(
   (store) => {
@@ -24,6 +25,8 @@ export default class VKPlayList extends React.Component {
     super(props)
     this.login = this.login.bind(this)
     this.getAudio = this.getAudio.bind(this)
+
+    init() // VK init
   }
 
   login() {
@@ -31,31 +34,32 @@ export default class VKPlayList extends React.Component {
   }
 
   getAudio() {
-    // console.log(this.props)
-    this.props.getAudio(this.props.auth.userId)
+    if (this.props.auth.auth) {
+      this.props.getAudio(this.props.auth.userId)
+    }
   }
 
   render() {
     const pl = this.props.playlist.map((item, index) => {
-      return <li key={index}>{item.artist}- {item.title}</li>
+      return <li className="list-group-item" key={index}>{item.artist} - {item.title}</li>
     })
 
     return (
-      <div>
-        <h4>VK playlist</h4>
-        <pre>
-          {JSON.stringify(this.props.auth, null, 2)}
-        </pre>
-        <button onClick={this.login}>Логин</button><br />
+      <div className="panel panel-primary">
+        <div className="panel-heading">VK playlist</div>
+        <div className="panel-body">
+          <pre>
+            {JSON.stringify(this.props.auth, null, 2)}
+          </pre>
+          <button className="btn btn-default" onClick={this.login}>Логин</button>
+          {' '}
+          <button className="btn btn-default" onClick={this.getAudio} disabled={!this.props.auth.auth}>Плейлист</button>
+        </div>
         {this.props.auth.auth &&
-          <div>
-            <button onClick={this.getAudio}>Плейлист</button>
-            <ul>
-              {pl}
-            </ul>
-          </div>
+          <ul className="list-group">
+            {pl}
+          </ul>
         }
-
       </div>
     )
   }

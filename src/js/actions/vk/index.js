@@ -26,7 +26,8 @@ export function login(dispatch) {
   return (dispatch) => {
     VK.Auth.login((r) => {
       if (r.session) {
-        dispatch({type: 'SET_USER', userId: r.session.user.id, auth: true})
+        console.log(r)
+        dispatch({type: 'SET_USER', session: r.session, auth: true})
       } else {
         console.log('login cancel')
       }
