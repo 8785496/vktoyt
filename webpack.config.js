@@ -2,16 +2,21 @@ var webpack = require("webpack");
 
 module.exports = {
     entry: __dirname + "/src/js/index.js",
-    devtool: 'sourcemaps',
-    cache: true,
-    debug: true,
+    // devtool: 'sourcemaps',
+    // cache: true,
+    // debug: true,
     output: {
-        path: __dirname + "/js",
+        path: __dirname + "/public/js",
         filename: "bundle.js",
         publicPath: "/js/"
     },
     plugins: [
-        // new webpack.optimize.UglifyJsPlugin({minimize: true})
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin(/*{ minimize: true }*/)
     ],
     module: {
         loaders: [
