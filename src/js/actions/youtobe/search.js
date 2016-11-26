@@ -9,7 +9,6 @@ export function search(q, id, dispatch) {
 
     const reg = /[^0-9A-Za-zА-ЯЁа-яё]+/g
     const query = q.replace(reg, ' ')
-    console.log('query = ', query)
 
     const request = gapi.client.youtube.search.list({
       q: query,

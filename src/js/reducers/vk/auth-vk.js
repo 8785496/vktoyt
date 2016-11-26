@@ -1,4 +1,4 @@
-const stateDefault = {auth: false, userId: 0}
+const stateDefault = {auth: false, session: null}
 
 export default function reducer(state = stateDefault, action) {
   switch (action.type) {

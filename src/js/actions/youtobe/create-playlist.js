@@ -1,12 +1,12 @@
 // Create a private playlist.
-export function createPlaylist(dispatch) {
+export function createPlaylist(title, dispatch) {
   return (dispatch) => {
     var request = gapi.client.youtube.playlists.insert({
       part: 'snippet,status',
       resource: {
         snippet: {
-          title: 'Test Playlist',
-          description: 'A private playlist created with the YouTube API'
+          title: title,
+          description: 'A private playlist created with VK to Youtobe converter'
         },
         status: {
           privacyStatus: 'private'

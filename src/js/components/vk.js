@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { login } from '../actions/vk'
-import { getAudio } from '../actions/vk'
 import { init } from '../actions/vk'
 
 @connect(
@@ -15,8 +14,7 @@ import { init } from '../actions/vk'
   },
   (dispatch) => {
     return {
-      login: bindActionCreators(login, dispatch),
-      getAudio: bindActionCreators(getAudio, dispatch)
+      login: bindActionCreators(login, dispatch)
     }
   }
 )
@@ -24,19 +22,11 @@ export default class VKPlayList extends React.Component {
   constructor(props) {
     super(props)
     this.login = this.login.bind(this)
-    this.getAudio = this.getAudio.bind(this)
-
     init() // VK init
   }
 
   login() {
     this.props.login()
-  }
-
-  getAudio() {
-    if (this.props.auth.auth) {
-      this.props.getAudio(this.props.auth.userId)
-    }
   }
 
   render() {
@@ -46,15 +36,14 @@ export default class VKPlayList extends React.Component {
 
     return (
       <div className="panel panel-primary">
-        <div className="panel-heading">VK playlist</div>
-        <div className="panel-body">
-          <pre>
-            {JSON.stringify(this.props.auth, null, 2)}
-          </pre>
-          <button className="btn btn-default" onClick={this.login}>Логин</button>
-          {' '}
-          <button className="btn btn-default" onClick={this.getAudio} disabled={!this.props.auth.auth}>Плейлист</button>
+        <div className="panel-heading">
+          VK {this.props.auth.auth && ('(' + this.props.auth.session.user.first_name + ' ' + this.props.auth.session.user.last_name + ')')}
         </div>
+        {!this.props.auth.auth &&
+          <div className="panel-body">
+            <button className="btn btn-default" onClick={this.login}>Плейлист</button>
+          </div>
+        }
         {this.props.auth.auth &&
           <ul className="list-group">
             {pl}
