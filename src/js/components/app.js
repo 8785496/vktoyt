@@ -1,6 +1,6 @@
 import React from 'react'
 
-import YPlayList from './youtobe'
+import YPlayList from './youtube'
 import VKPlayList from './vk'
 
 export default class App extends React.Component {

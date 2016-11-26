@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { createPlaylist } from '../actions/youtobe/create-playlist'
-import { addToPlaylist } from '../actions/youtobe/add-to-playlist'
-import { search } from '../actions/youtobe/search'
-import { init } from '../actions/youtobe/auth'
-import { login } from '../actions/youtobe/auth'
+import { createPlaylist } from '../actions/youtube/create-playlist'
+import { addToPlaylist } from '../actions/youtube/add-to-playlist'
+import { search } from '../actions/youtube/search'
+import { init } from '../actions/youtube/auth'
+import { login } from '../actions/youtube/auth'
 
 @connect(
   (store) => {
@@ -109,13 +109,11 @@ export default class YPlayList extends React.Component {
     return (
       <div className="panel panel-danger">
         <div className="panel-heading">
-          Youtobe {this.props.playlistYT.playlist && ` (Плейлист: ${this.props.playlistYT.playlist.snippet.title})`}
+          Youtube {this.props.playlistYT.playlist && ` (Плейлист: ${this.props.playlistYT.playlist.snippet.title})`}
         </div>
         <div className="panel-body">
 
-          {this.state.value}
-
-          {this.props.auth.auth &&
+          {this.props.auth.auth && !this.props.playlistYT.playlist &&
             <div className="input-group">
               <input type="text" className="form-control" placeholder="Название плейлиста..." value={this.state.title} onChange={this.handleChange} />
               <span className="input-group-btn">

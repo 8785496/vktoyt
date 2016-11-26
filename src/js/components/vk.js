@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux'
 
 import { login } from '../actions/vk'
 import { init } from '../actions/vk'
+import { status } from '../actions/vk'
+import { getAudio } from '../actions/vk'
 
 @connect(
   (store) => {
@@ -14,7 +16,9 @@ import { init } from '../actions/vk'
   },
   (dispatch) => {
     return {
-      login: bindActionCreators(login, dispatch)
+      login: bindActionCreators(login, dispatch),
+      status: bindActionCreators(status, dispatch),
+      getAudio: bindActionCreators(getAudio, dispatch)
     }
   }
 )
@@ -23,32 +27,42 @@ export default class VKPlayList extends React.Component {
     super(props)
     this.login = this.login.bind(this)
     init() // VK init
+    this.props.status()
+
+    this.getAudio = this.getAudio.bind(this)
   }
 
   login() {
     this.props.login()
   }
 
+  getAudio() {
+    this.props.getAudio(this.props.auth.session.mid)
+  }
+
   render() {
     const pl = this.props.playlist.map((item, index) => {
-      return <li className="list-group-item" key={index}>{item.artist} - {item.title}</li>
+      return <li className="list-group-item" key={index}>{item.artist}- {item.title}</li>
     })
 
     return (
       <div className="panel panel-primary">
         <div className="panel-heading">
-          VK {this.props.auth.auth && ('(' + this.props.auth.session.user.first_name + ' ' + this.props.auth.session.user.last_name + ')')}
+          VK {this.props.auth.auth && `(id${this.props.auth.session.mid})`}
         </div>
-        {!this.props.auth.auth &&
+        {this.props.playlist.length === 0 &&
           <div className="panel-body">
-            <button className="btn btn-default" onClick={this.login}>Плейлист</button>
+            {!this.props.auth.auth &&
+              <button className="btn btn-default" onClick={this.login}>Логин</button>
+            }
+            {this.props.auth.auth &&
+              <button className="btn btn-default" onClick={this.getAudio}>Плейлист</button>
+            }
           </div>
         }
-        {this.props.auth.auth &&
-          <ul className="list-group">
-            {pl}
-          </ul>
-        }
+        <ul className="list-group">
+          {pl}
+        </ul>
       </div>
     )
   }
